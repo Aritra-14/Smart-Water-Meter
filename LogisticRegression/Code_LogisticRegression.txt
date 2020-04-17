@@ -1,0 +1,25 @@
+channelID = 893064;
+iftttURL = 'https://maker.ifttt.com/trigger/ExsFlow/with/key/EvCI9lnS1reQkqCJm3Bcp3kzvtwZhN4FJkQY2rbe2h';
+[data,timestamps,channelInfo]=thingSpeakRead(893064,'Fields',[1],'DateRange',[datetime(2019,11,2,00,00,01),datetime(2019,11,2,21,00,01)],'OutputFormat','TimeTable','ReadKey','7DE81FFQ90ZUM2QU');
+%disp(data)
+X=data.FlowMeter;
+%disp(X);
+Y=[0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0]';
+%disp(Y);
+B = glmfit(X, Y, 'binomial', 'link', 'logit')
+Z = B(1) + (X * B(2));
+Z = Z ./ (1 + exp(-Z));
+disp(Z);
+for i=1:length(X)
+    X(i)=X(i)*100;
+end
+Z(7)=0;
+disp(X);
+for i=1:length(X)
+    if X(i) > (Z(i)+200)
+        plantMessage = X(i)+' Litres\Min';
+        webwrite(iftttURL,'value1','Excess Flow','value2',plantMessage);
+        disp('Excess Flow');
+        disp(i);
+    end
+end

@@ -1,0 +1,7 @@
+[data,timestamps,channelInfo]=thingSpeakRead(893064,'Fields',[1],'DateRange',[datetime(2019,11,2,00,00,01),datetime(2019,11,2,21,00,01)],'OutputFormat','TimeTable','ReadKey','7DE81FFQ90ZUM2QU');
+disp(data)
+x=data.Timestamps;
+y=data.FlowMeter;
+scatter(x,y,'b');
+ylabel('Flow Rate (litre/min)');
+hold on

@@ -1,0 +1,11 @@
+X = [0.3200 0.3200 0.3200 0.9700 0.9700 0.3200 5.8100 0.3200 0.9700 1.2900 1.6100 0.9700 0.6500 0.3200 0 4.8400 5.1600 2.2600 4.5200 4.5200 4.5200 4.5200 4.5200 5.4800 1.6100 1.6100 2.5800 2.5800 2.9000 3.2300 3.2300 3.2300 3.2300 3.2300 3.2300 0.9700 0.6500 0.9700 0.9700 0.9700 0.6500 0.6500]';
+Y = [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0]';
+data   = [X, Y];
+species = cellstr(label);
+groups = ismember(species,one_label)
+[train, test] = crossvalind('holdOut',groups);
+cp = classperf(groups);
+svmStruct = svmtrain(data(train,),groups(train),'showplot',true,'kernel_function',kernel_function);
+classes = svmclassify(svmStruct,data(test,),'showplot',true);
+classperf(cp,classes,test);
+cp.CorrectRate
